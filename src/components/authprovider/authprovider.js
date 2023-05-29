@@ -4,20 +4,23 @@ import AuthContext from './authcontext';
 
 const AuthProvider = (props)=>{
 
-    const [token,setToken] = useState(null)
+    const initialToken = localStorage.getItem('token')
+    const [token,setToken] = useState(initialToken)
     const [profile,setProfile]= useState(null)
   const   userIsLoggedIn = !!token;
     const loginHandler  =(token)=>{
 setToken(token)
- 
+localStorage.setItem('token', token)
+
     }
     const logoutHandler =()=>{
         setToken(null)
+        localStorage.removeItem('token')
+        localStorage.removeItem('data')
     }
     const ProfileHandler =(data)=>{
 setProfile(data)
     }
-
     const  authcontext = {
         isLoggedIn:userIsLoggedIn,
     login:loginHandler,

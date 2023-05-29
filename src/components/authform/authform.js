@@ -1,10 +1,10 @@
 import React, { useState, useRef,useContext } from "react";
-import { useHistory } from "react-router-dom";
+import {NavLink ,useHistory } from "react-router-dom";
 import classes from './authform.module.css';
 import AuthContext from "../authprovider/authcontext";
 function AuthForm() {
-    const history = useHistory()
-  const authCtx = useContext(AuthContext)
+  const history = useHistory();
+  const authCtx = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
@@ -36,7 +36,6 @@ function AuthForm() {
           body: JSON.stringify({
             email: enteredEmail,
             password: enteredpassword,
-
             returnSecureToken: true,
           }),
           headers: {
@@ -81,15 +80,15 @@ function AuthForm() {
         })
         .then((data) => {
           console.log(data);
-          authCtx.login(data.idToken)
-          history.replace('/ExpensePage')
+          authCtx.login(data.idToken);
+
+          history.replace("/ExpensePage");
         })
         .catch((err) => {
           alert(err.message);
         });
     }
   };
-
   return (
     <section>
       <div className={classes.auth}>
@@ -138,6 +137,7 @@ function AuthForm() {
               </div>
             </div>
           )}
+
           <div>
             <button>{isLogin ? "Login" : "Sing up"}</button>
             <div>
@@ -147,7 +147,11 @@ function AuthForm() {
             </div>
           </div>
         </form>
-      </div>
+       <div>
+            {isLogin && <NavLink 
+           style={{textDecoration:"none" ,color:'brown'}}   to="/ChangePassword"  > Forgot password?  </NavLink> }
+          </div> 
+      </div> 
     </section>
   );
 }

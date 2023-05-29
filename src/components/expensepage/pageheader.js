@@ -32,6 +32,8 @@ function PageHeader() {
         })
         .then((data) => {
           authCtx.ProfileDetails(data);
+          const get =JSON.stringify(data)
+        localStorage.setItem('data',get)
         })
         .catch((err) => {
           alert(err.message);
