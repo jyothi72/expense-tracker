@@ -6,7 +6,7 @@ import React, { useContext } from "react";
 import ExpensePage from "./components/expensepage/expensepage";
 import ProfilForm from "./components/profileform/profileform";
 import Logoutpage from "./components/logout/logoutpage";
-
+import PasswordChange from "./components/logout/passsword";
 function App() {
   const authCtx=useContext(AuthContext)
   return (
@@ -25,7 +25,11 @@ function App() {
 <ProfilForm/>
         </Route>)}
        {!authCtx.isLoggedIn&&<Route path='/Authpage'><AuthForm/></Route>}
+       {!authCtx.isLoggedIn&&<Route path='/Authpage'><AuthForm/></Route>}
 
+<Route     path='/ChangePassword'>
+  <PasswordChange/>
+</Route>
 
 </Switch>
   </React.Fragment>
