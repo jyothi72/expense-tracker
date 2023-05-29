@@ -4,48 +4,54 @@ import classes1 from "./profileform.module.css"
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import AuthContext from "../authprovider/authcontext";
 function ProfilForm() {
-    const authCtx = useContext(AuthContext)
- const nameRef = useRef()
- const photourlRef = useRef()
+    const authCtx = useContext(AuthContext);
+  const nameRef = useRef();
+  const photourlRef = useRef();
 
-const submitHandler =(event)=>{
-  event.preventDefault()
-const enteredName = nameRef.current.value;
-const enteredUrl = photourlRef.current.value;
-  fetch('https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCk-d_Kex1tSDAdDPakeaEqzdNnLEJ0Uls',{
-method:'POST',
-body:JSON.stringify({
-    idToken:authCtx.tokenid,
-displayName:enteredName,
-photoUrl :enteredUrl,
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const enteredName = nameRef.current.value;
+    const enteredUrl = photourlRef.current.value;
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCk-d_Kex1tSDAdDPakeaEqzdNnLEJ0Uls",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idToken: authCtx.tokenid,
+          displayName: enteredName,
+          photoUrl: enteredUrl,
 
-returnSecureToken:true,
-}),
-headers:{
-    'Content-Type': "application/json"
-},
-  }).then((res)=>{
-    if(res.ok){
-        return res.json()
-    }else{
-        return res.json().then((data)=>{
-            let erroMessage = "Authentication failed!"
-            if(data && data.error&& data.error.message){
-                erroMessage = data.error.message;
+          returnSecureToken: true,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            let erroMessage = "Authentication failed!";
+            if (data && data.error && data.error.message) {
+              erroMessage = data.error.message;
             }
-            throw new Error(erroMessage)
-        })
-    }
-  })
-  .then((data)=>{
-    console.log(data)
-    console.log('seccess')
-  }).catch((err)=>{
-    alert(err.message);
-  })
-}
+            throw new Error(erroMessage);
+          });
+        }
+      })
+      .then((data) => {
+        console.log("seccess");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
-  return (
+console.log(authCtx.profile.users[0].displayName,'profileform data')
+const getdata = authCtx.profile.users[0]
+ return (
     <React.Fragment>
       <header className={classes.pageheader}>
         {" "}
@@ -75,7 +81,11 @@ headers:{
               <label htmlFor="name">Full Name:</label>
             </div>
             <div>
-              <input type="text" ref={nameRef}></input>
+              <input
+                type="text"
+                ref={nameRef}
+                defaultValue={getdata.displayName}
+              ></input>
             </div>
             <div>
               {" "}
@@ -83,7 +93,11 @@ headers:{
             </div>
             <div>
               {" "}
-              <input type="text" ref={photourlRef}></input>
+              <input
+                type="text"
+                ref={photourlRef}
+                 defaultValue={getdata.photoUrl}
+              ></input>
             </div>
           </div>
           <div>
@@ -95,5 +109,4 @@ headers:{
     </React.Fragment>
   );
 }
-
 export default ProfilForm;
