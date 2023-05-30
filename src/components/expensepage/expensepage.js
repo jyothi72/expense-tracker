@@ -8,56 +8,7 @@ import ExpenseInput from "../../expenseform/input"
 
 function ExpensePage() {
   const authCtx = useContext(AuthContext);
-  const [printexpense, setPrintExpense] = useState([]);
-  const [getdat, setGetdata] = useState([]);
-useEffect(()=>{
-  async function fetchExpenses(){
-    try{
-      const res = await fetch('https://expensereal-777d2-default-rtdb.firebaseio.com/expenses.json',{
-        method:"GET",
-        headers:{
-          "Content-Type": "application/json"
-        },
-      })
-      const data = await res.json();
-      if(res.ok){
-        const newdata = [];
-        for(let key in data){
-          newdata.push({id:key,...data[key]});
-        }
-        setGetdata(newdata)
-        setPrintExpense(newdata)
-      }else{
-        throw data.error
-      }
-    }catch(error){
-      console.log(error.message)
-    }
-  }
-  fetchExpenses()
 
-},[])
-
-console.log(getdat,'from expensepage useeffect get data')
-  const inputvalueHandler = (expense) => {
-    fetch("https://expensereal-777d2-default-rtdb.firebaseio.com/expenses.json", {
-      method: "POST",
-      body: JSON.stringify(expense),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        console.log(res, "form post data");
-        return res.json();
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-    setPrintExpense((prevexpense) => {
-      return [expense, ...prevexpense];
-    });
-  };
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -96,7 +47,7 @@ console.log(getdat,'from expensepage useeffect get data')
         alert(err.message);
       });
   };
-  console.log(printexpense, "from expnesepage");
+
   return (
     <React.Fragment>
       <PageHeader />
@@ -108,8 +59,7 @@ console.log(getdat,'from expensepage useeffect get data')
           <button>Email Verificatin</button>
         </div>
       </form>
-      <ExpenseForm ondata={inputvalueHandler}></ExpenseForm>
-      <ExpenseInput printexpense={printexpense}></ExpenseInput>
+      <ExpenseForm></ExpenseForm>
     </React.Fragment>
   );
 }
